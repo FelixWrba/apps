@@ -65,9 +65,10 @@ function getDashboardView() {
         listHTML = '--- No workouts yet ---';
     }
 
-    return `<h2>Dashboard</h2><ul>${listHTML}</ul><form onsubmit="handleWorkoutCreate(); return false">
-    <input placeholder="Workout name" id="w-name" required autocomplete="off" />
-    <input placeholder="Workout sets" id="w-sets" required autocomplete="off" />
+    return `<h2>Dashboard</h2><ul>${listHTML}</ul>
+    <form onsubmit="handleWorkoutCreate(); return false" class="workout-create-form">
+    <input placeholder="Reps" type="number" id="w-sets" required autocomplete="off" />
+    <input placeholder="Workout" id="w-name" required autocomplete="off" />
     <button type="submit">Create</button>
     </form>`;
 }
@@ -97,9 +98,9 @@ function getWorkoutView(id) {
     <button onclick="renderPage(getDashboardView())">Back</button>
     <button onclick="handleWorkoutDelete(${current.id})">Delete</button>
     <ul>${listHTML}</ul>
-    <form onsubmit="handleExerciseAdd(${current.id}); return false" >
-    <input id="e-name" placeholder="exercise name" autocomplete="off" required />
-    <input id="e-reps" placeholder="exercise reps" autocomplete="off" required />
+    <form onsubmit="handleExerciseAdd(${current.id}); return false" class="exercise-create-form" >
+    <input id="e-reps" placeholder="8-12" autocomplete="off" required />
+    <input id="e-name" placeholder="Exercise" autocomplete="off" required />
     <button>Add</button>
     </form>`;
 }
@@ -153,8 +154,14 @@ function getTrainingView(workoutIndex, set, exerciseIndex) {
     const previosExerciseIndex = exerciseIndex < 1 ? workout.exercises.length - 1 : exerciseIndex - 1;
     const previosExerciseSet = exerciseIndex < 1 ? set - 1 : set;
     const previosButton = `<button onclick="renderPage(getTrainingView(${workoutIndex}, ${previosExerciseSet}, ${previosExerciseIndex}))">Previos</button>`;
+
+    const prevExercise = workout.exercises[exerciseIndex - 1];
+    const nextExercise = workout.exercises[exerciseIndex + 1];
+
     return `${title}
+    ${prevExercise ? `<h3 class="training-exercise-title fade">${prevExercise.reps}x ${prevExercise.name}</h3>` : '<h3 class="training-exercise-title fade">&nbsp;</h3>'}
     <h3 class="training-exercise-title">${exercise.reps}x ${exercise.name}</h3>
+    ${nextExercise ? `<h3 class="training-exercise-title fade">${nextExercise.reps}x ${nextExercise.name}</h3>` : '<h3 class="training-exercise-title fade">&nbsp;</h3>'}
     <div class="training-control-buttons">
     ${previosExerciseSet > 0 ? previosButton : ''}
     <button onclick="renderPage(getTrainingView(${workoutIndex}, ${set}, ${exerciseIndex + 1}))">Next</button>

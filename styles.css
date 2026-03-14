@@ -77,16 +77,36 @@ ul {
     list-style-type: none;
 }
 
-.w-list-item {
+.w-list-item, .e-list-item {
     margin-bottom: 1em;
 }
 
-.e-list-item {
-    margin-bottom: 1em;
+.w-list-item button, .e-list-item button {
+    padding: 0.25rem 0.5rem;
+}
+
+.workout-create-form, .exercise-create-form {
+    display: flex;
+    gap: 0.5rem;
+}
+
+#w-sets, #e-reps {
+    width: 70px;
+}
+
+#w-name, #e-name {
+    max-width: 200px;
+    min-width: 50px;
+    flex: 1;
 }
 
 .training-exercise-title {
-    padding: 0.5rem 2rem 1.5rem;
+    padding-inline: 2rem;
+}
+
+.training-exercise-title.fade {
+    color: #aaa;
+    padding-block: 0.5rem;
 }
 
 .training-workout-title {
@@ -101,6 +121,7 @@ ul {
 }
 
 .training-control-buttons {
+    padding-top: 0.5rem;
     display: flex;
     gap: 0.5rem;
 }
