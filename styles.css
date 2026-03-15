@@ -8,6 +8,10 @@
     -webkit-tap-highlight-color: transparent;
 }
 
+html {
+    overscroll-behavior: none;
+}
+
 body {
     color: #222;
     background: #fefefe;
@@ -67,10 +71,32 @@ h3 {
 button {
     padding: 0.25em 2em;
     cursor: pointer;
+    border: 1px solid #222;
+    border-radius: 4px;
+    background-color: #eee;
+    color: #222;
+}
+
+button:hover {
+    background-color: #dddddd;
+}
+
+button:active {
+    background-color: transparent;
+}
+
+button:disabled {
+    cursor: not-allowed;
+    background-color: transparent;
+    border-color: #aaa;
+    color: #aaa;
 }
 
 input {
     padding: 0.25em;
+    border: 1px solid #222;
+    border-radius: 4px;
+    color: #222;
 }
 
 ul {
@@ -98,6 +124,18 @@ ul {
     max-width: 200px;
     min-width: 50px;
     flex: 1;
+}
+
+.workout-options {
+    margin-bottom: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.workout-options button {
+    flex: 1;
+    white-space: nowrap;
 }
 
 .training-exercise-title {
@@ -141,4 +179,16 @@ ul {
     .training-control-buttons button {
         flex: 1;
     }
+
+    button:hover {
+        background-color: #eee;
+    }
+}
+
+.message {
+    margin: 1rem;
+}
+
+*:focus-visible {
+    outline: 2px solid #222;
 }

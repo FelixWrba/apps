@@ -62,19 +62,19 @@ function getDashboardView() {
         </li>`).join('');
 
     if (!listHTML) {
-        listHTML = '--- No workouts yet ---';
+        listHTML = '<p class="message">No Workouts yet</p>';
     }
 
-    return `<h2>Dashboard</h2><ul>${listHTML}</ul>
+    return `<h2>Overview</h2><ul>${listHTML}</ul>
     <form onsubmit="handleWorkoutCreate(); return false" class="workout-create-form">
-    <input placeholder="Reps" type="number" id="w-sets" required autocomplete="off" />
+    <input placeholder="Reps" type="number" id="w-sets" autocomplete="off" />
     <input placeholder="Workout" id="w-name" required autocomplete="off" />
     <button type="submit">Create</button>
     </form>`;
 }
 
 function handleWorkoutCreate() {
-    createWorkout($('#w-name').value, $('#w-sets').value);
+    createWorkout($('#w-name').value.trim(),serialize(Number($('#w-sets').value) || 3));
     renderPage(getDashboardView());
 }
 
@@ -82,21 +82,25 @@ function getWorkoutView(id) {
     let index = workouts.findIndex(workout => workout.id === id);
 
     if (index === -1) {
-        return '--- Workout not found ---';
+        return '<p class="message">Workout not found</p>';
     }
 
     let current = workouts[index];
 
-    let listHTML = current.exercises.map(exercise => `<li class="e-list-item">${exercise.reps}x ${x(exercise.name)} - <button>Done</button><button onclick="handleExerciseRemove(${id}, ${exercise.id})">Remove</button></li>`).join('');
+    let listHTML = current.exercises.map(exercise => `<li class="e-list-item">${exercise.reps}x ${x(exercise.name)} - <button onclick="handleExerciseRemove(${id}, ${exercise.id})">Remove</button></li>`).join('');
 
 
     if (!listHTML) {
-        listHTML = '--- No exercises yet ---';
+        listHTML = '<p class="message">No Exercises yet</p>';
     }
 
     return `<h2>${current.sets}x ${x(current.name)}</h2>
+    <div class="workout-options">
     <button onclick="renderPage(getDashboardView())">Back</button>
+    <button onclick="handleWorkoutRename(${index}, ${id})">Rename</button>
+    <button onclick="handleWorkoutSetsChange(${index}, ${id})">Change Sets</button>
     <button onclick="handleWorkoutDelete(${current.id})">Delete</button>
+    </div>
     <ul>${listHTML}</ul>
     <form onsubmit="handleExerciseAdd(${current.id}); return false" class="exercise-create-form" >
     <input id="e-reps" placeholder="8-12" autocomplete="off" required />
@@ -106,12 +110,42 @@ function getWorkoutView(id) {
 }
 
 function handleWorkoutDelete(id) {
-    if (!window.confirm('Should this workout be deleted?')) {
+    if (!window.confirm('Should this Workout be deleted?')) {
         return;
     }
 
     deleteWorkout(id);
     renderPage(getDashboardView());
+}
+
+function handleWorkoutRename(workoutIndex, workoutId) {
+    if(!workouts[workoutIndex]) {
+        return;
+    }
+
+    const newName = window.prompt('Enter a new name for this Workout:', workouts[workoutIndex].name);
+    if(!newName || !newName.trim()) {
+        return;
+    }
+    workouts[workoutIndex].name = newName.trim();
+
+    saveWorkouts();
+    renderPage(getWorkoutView(workoutId));
+}
+
+function handleWorkoutSetsChange(workoutIndex, workoutId) {
+    if(!workouts[workoutIndex]) {
+        return;
+    }
+
+    const newSets = window.prompt('Enter a new sets count for this Workout:', workouts[workoutIndex].sets);
+    if(!newSets || isNaN(Number(newSets))) {
+        return;
+    }
+    workouts[workoutIndex].sets = serialize(Number(newSets));
+
+    saveWorkouts();
+    renderPage(getWorkoutView(workoutId));
 }
 
 function handleExerciseAdd(id) {
@@ -127,27 +161,27 @@ function handleExerciseRemove(id, exerciseId) {
 function getTrainingView(workoutIndex, set, exerciseIndex) {
     const workout = workouts[workoutIndex];
     if (!workout) {
-        return '--- workout not found ---';
+        return '<p class="message">Workout not found</p>';
     }
     const title = `<div class="training-workout-title">
     <h2>${set}/${workout.sets} ${workout.name}</h2>
-    <button onclick="handleWorkoutCancel()">Cancel Workout</button>
+    <button onclick="handleWorkoutCancel()">Cancel</button>
     </div>`;
 
     const exercise = workout.exercises[exerciseIndex];
     if (!exercise) {
-        const returnButton = `<div class="training-control-buttons"><button onclick="renderPage(getDashboardView())">Return to dashboard</button></div>`;
+        const returnButton = `<div class="training-control-buttons"><button onclick="renderPage(getDashboardView())">Return to Overview</button></div>`;
         if (workout.exercises.length === 0) {
-            return title + '--- no exercises ---' + returnButton;
+            return title + '<p class="message">No Exercises yet</p>' + returnButton;
         }
         if (Number(workout.sets) === set) {
             return `<h2>Workout ${workout.name} completed!</h2> ${returnButton}`;
         }
         else {
             return `<h2>${set}/${workout.sets} sets of ${workout.name} completed!</h2>
-            <p class="training-info-message">Pause for a few minutes</p>
+            <p class="training-info-message">Pause for a few minutes.</p>
             <div class="training-control-buttons">
-            <button onclick="renderPage(getTrainingView(${workoutIndex}, ${set + 1}, 0))">Continue workout ${workout.name}</button>
+            <button onclick="renderPage(getTrainingView(${workoutIndex}, ${set + 1}, 0))">Continue Workout ${workout.name}</button>
             </div>`;
         }
     }
@@ -169,7 +203,7 @@ function getTrainingView(workoutIndex, set, exerciseIndex) {
 }
 
 function handleWorkoutCancel() {
-    if (window.confirm('Should this workout be cancelled?')) {
+    if (window.confirm('Should this Workout be cancelled?')) {
         renderPage(getDashboardView());
     }
 }

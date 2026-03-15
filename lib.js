@@ -10,3 +10,7 @@ function x(text) {
         .replace(/"/g, '&quot;')
         .replace(/'/g, '&#039;')
 }
+
+function serialize(number) {
+    return Math.max(Math.abs(number), 1);
+}
