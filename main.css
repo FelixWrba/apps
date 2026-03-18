@@ -1,0 +1,116 @@
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font: inherit;
+    -webkit-tap-highlight-color: transparent;
+}
+
+html {
+    overscroll-behavior: none;
+}
+
+body {
+    color: #222;
+    background: #fefefe;
+    line-height: 1.6;
+    font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        'Segoe UI',
+        Roboto,
+        Oxygen,
+        Ubuntu,
+        Cantarell,
+        'Fira Sans',
+        'Droid Sans',
+        'Helvetica Neue',
+        sans-serif;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+#app {
+    max-width: 1000px;
+    margin: auto;
+    margin-bottom: 4rem;
+    min-height: 100vh;
+    padding: 1em;
+}
+
+header,
+footer {
+    padding: 1em;
+}
+
+header {
+    position: sticky;
+    top: 0;
+    backdrop-filter: blur(4px);
+    background: linear-gradient(white, transparent);
+    display: flex;
+    align-items: center;
+}
+
+header a {
+    color: inherit;
+    margin-inline-end: 1rem;
+    text-decoration: none;
+    font-size: 2rem;
+}
+
+h1 {
+    font-size: 2.5rem;
+    font-weight: bolder;
+}
+
+h2 {
+    font-size: 2rem;
+    font-weight: bolder;
+}
+
+h3 {
+    font-size: 1.5rem;
+    font-weight: bolder;
+}
+
+button {
+    padding: 0.25em 2em;
+    cursor: pointer;
+    border: 1px solid #222;
+    border-radius: 4px;
+    background-color: #eee;
+    color: #222;
+}
+
+button:hover {
+    background-color: #dddddd;
+}
+
+button:active {
+    background-color: transparent;
+}
+
+button:disabled {
+    cursor: not-allowed;
+    background-color: transparent;
+    border-color: #aaa;
+    color: #aaa;
+}
+
+input {
+    padding: 0.25em;
+    border: 1px solid #222;
+    border-radius: 4px;
+    color: #222;
+}
+
+@media (max-width: 440px) {
+    button:hover {
+        background-color: #eee;
+    }
+}
