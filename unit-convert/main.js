@@ -6,12 +6,13 @@ UnitType: { name: string, factor: float, short: string }
 */
 const units = [
     {
-        name: "Länge",
+        name: 'Länge',
+        siUnit: 'Meter',
         types: [
             { name: 'Lichtjahr', factor: 9454254955488000.0, short: 'ly', },
             { name: 'Astronomische Einheit', factor: 149597870700.0, short: 'ae', },
             { name: 'Nautische Meile', factor: 1853.184, short: 'nm', },
-            { name: 'Meile', factor: 1482, short: 'mi', },
+            { name: 'Meile', factor: 1609.344, short: 'mi', },
             { name: 'Kilometer', factor: 1000, short: 'km', },
             { name: 'Hektometer', factor: 100, short: 'hm', },
             { name: 'Meter', factor: 1, short: 'm', },
@@ -25,6 +26,63 @@ const units = [
             { name: 'Nanometer', factor: 0.000000001, short: 'nm', },
             { name: 'Planck-Länge', factor: 1.616199e-35, short: 'pl', },
         ],
+    },
+    {
+        name: 'Fläche',
+        siUnit: 'Quadratmeter',
+        types: [
+            { name: 'Quadratmeile', factor: 2589988.110, short: 'mi2' },
+            { name: 'Quadratkilometer', factor: 1000000, short: 'km2' },
+            { name: 'Hektar', factor: 10000, short: 'ha' },
+            { name: 'Ar', factor: 100, short: 'a' },
+            { name: 'Quadratmeter', factor: 1, short: 'm2' },
+            { name: 'Quadratfuß', factor: 0.09290304, short: 'ft2' },
+            { name: 'Quadratdezimeter', factor: 0.01, short: 'dm2' },
+            { name: 'Quadratzoll', factor: 0.00064516, short: 'in2' },
+            { name: 'Quadratzentimeter', factor: 0.0001, short: 'cm2' },
+            { name: 'Quadratmillimeter', factor: 0.000001, short: 'mm2' },
+        ]
+    },
+    {
+        name: 'Volumen',
+        siUnit: 'Kubikmeter',
+        types: [
+            { name: 'Kubikmeile', factor: 4168181825.441, short: 'mi3' },
+            { name: 'Kubikkilometer', factor: 1000000000, short: 'km3' },
+            { name: 'Kubikmeter', factor: 1, short: 'm3' },
+            { name: 'Barrel', factor: 0.158987294, short: 'bl' },
+            { name: 'Kubikfuß', factor: 0.028316847, short: 'ft3' },
+            { name: 'Kubikdezimeter', factor: 0.001, short: 'dm3' },
+            { name: 'Liter', factor: 0.001, short: 'l' },
+            { name: 'Gallone', factor: 0.003785411, short: 'gal' },
+            { name: 'Pint', factor: 0.000473176473, short: 'pt' },
+            { name: 'Kubikzoll', factor: 0.000016387, short: 'in3' },
+            { name: 'Kubikzentimeter', factor: 0.000001, short: 'cm3' },
+            { name: 'Milliliter', factor: 0.000001, short: 'ml' },
+        ]
+    },
+    {
+        name: 'Geschwindigkeit',
+        siUnit: 'Meter/Sekunde',
+        types: [
+            { name: 'Lichtgeschwindigkeit', factor: 299792458, short: 'ls' },
+            { name: 'Meter/Sekunde', factor: 1, short: 'mps' },
+            { name: 'Knoten', factor: 0.514444444, short: 'kn' },
+            { name: 'Meilen/Stunde', factor: 0.4469, short: 'mph' },
+            { name: 'Kilometer/Stunde', factor: 0.277777778, short: 'kmh' },
+            { name: 'Fuß/Minute', factor: 0.00508, short: 'fpm' },
+        ]
+    },
+    {
+        name: 'Gewicht (Masse)',
+        siUnit: 'Kilogramm',
+        types: [
+            { name: 'Tonne', factor: 1000, short: 't' },
+            { name: 'Kilogramm', factor: 1, short: 'kg' },
+            { name: 'Pfund', factor: 0.454, short: 'lb' },
+            { name: 'Gramm', factor: 0.001, short: 'g' },
+            { name: 'Milligramm', factor: 0.000001, short: 'mg' },
+        ]
     }
 ]
 const shortcutLookup = getShortcutLookup();
@@ -39,10 +97,18 @@ function getShortcutLookup() {
     return lookups;
 }
 
-console.log(shortcutLookup);
+function getUnitHelpList() {
+    return units.map(unit => `<h2>${unit.name}</h2><ul>${unit.types.map(type => `<li>[ ${type.short} ] = 1 ${type.name} = ${type.factor} ${unit.siUnit}</li>`).join('')
+        }</ul>`).join('');
+}
 
 function getUnitOverview() {
-    return '<form onsubmit="handleUnitConvert(); return false"><input type="text" placeholder="3km" id="unit-field" autocomplete="off" spellcheck="off" /><button type="submit">Umrechnen</button></form><p id="error"></p><ul id="results"></ul>';
+    return `<form onsubmit="handleUnitConvert(); return false">
+    <input type="text" placeholder="3km" id="unit-field" autocomplete="off" spellcheck="false" />
+    <button type="submit">Umrechnen</button></form>
+    <p id="error"></p>
+    <section id="results"></section>
+    <section>${getUnitHelpList()}</section>`;
 }
 
 function handleUnitConvert() {
@@ -86,10 +152,10 @@ function getUnitConversions(unit, type, value) {
     const factor = units[unit].types[type].factor;
     const siUnit = value * factor;
 
-    conversions = `<h2>${value} ${units[unit].types[type].name} = </h2>`;
+    conversions = `<h2>${value} ${units[unit].types[type].name} = </h2><ul>`;
     conversions += units[unit].types
-        .filter(type => type.factor !== factor)
         .map(type => `<li>${roundNumber(siUnit / type.factor)} ${type.name}</li>`).join('');
+    conversions += '</ul>'
 
     return { conversions, conversionError };
 }
@@ -98,7 +164,7 @@ function parseInput(input) {
     let value, shortcut, error;
 
     input = input.trim();
-    if (input === '' || !!input.replace(/[0-9]+\.?[0-9]*[A-z]+/, '')) {
+    if (input === '' || !!input.replace(/[0-9]+\.?[0-9]*[A-z]+[0-9]*/, '')) {
         error = 'Ungültige Eingabe. Eingabe ist wie folgt zu formatieren: [Zahl][Abkürzung der Einheit]';
     }
     else {
@@ -106,7 +172,7 @@ function parseInput(input) {
         value = Number(input.slice(0, firstLetterIndex));
         shortcut = input.slice(firstLetterIndex);
         if (isNaN(value) || !isFinite(value)) {
-            error = `Unglültige Zahl: Zahl muss im Bereich von 0-${Number.MAX_VALUE} liegen.`;
+            error = `Ungülltige Zahl: Zahl muss im Bereich von 0 - ${Number.MAX_VALUE} liegen.`;
         }
     }
 
@@ -114,28 +180,45 @@ function parseInput(input) {
 }
 
 function roundNumber(number) {
-    if(!isFinite(number)) {
+    // handle edge cases
+    if (!isFinite(number)) {
         return '< ' + Number.MAX_VALUE;
     }
-    if (number.toString().includes('e')) {
-        return number;
+    let asString = number.toString();
+    if (asString.includes('e') || !asString.includes('.')) {
+        return asString;
     }
-    const precision = 3;
-    let rounded = number.toFixed(precision);
-    let decimals = rounded.slice(-precision);
-    let areDecimalsDiscarded = true;
+    return number;
 
-    for (let i = precision - 1; i > -1; i--) {
-        if (decimals[i] === '0') {
-            rounded = rounded.slice(0, -1);
+    const precision = 3;
+    let validFigures = 0;
+    let expectTrailingNull = true;
+    let isDecimalPart = false;
+
+    console.log(asString);
+
+    for (let i = 0; i < asString.length; i++) {
+        if (asString[i] === '.') {
+            isDecimalPart = true;
+            continue;
+        }
+        if (asString[i] === '0') {
+            if (!expectTrailingNull) {
+                validFigures++;
+            }
         }
         else {
-            areDecimalsDiscarded = false;
+            validFigures++;
+            expectTrailingNull = false;
+        }
+
+        if (validFigures >= precision) {
+            asString = asString.slice(0, i + 1);
             break;
         }
     }
 
-    return areDecimalsDiscarded ? rounded.slice(0, -1) : rounded;
+    return asString;
 }
 
 function findFirstLetter(text) {
