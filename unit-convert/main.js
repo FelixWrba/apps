@@ -74,7 +74,7 @@ const units = [
         ]
     },
     {
-        name: 'Gewicht (Masse)',
+        name: 'Gewicht',
         siUnit: 'Kilogramm',
         types: [
             { name: 'Tonne', factor: 1000, short: 't' },
@@ -82,6 +82,31 @@ const units = [
             { name: 'Pfund', factor: 0.454, short: 'lb' },
             { name: 'Gramm', factor: 0.001, short: 'g' },
             { name: 'Milligramm', factor: 0.000001, short: 'mg' },
+        ]
+    },
+    {
+        name: 'Zeit',
+        siUnit: 'Sekunde',
+        types: [
+            { name: 'Jahr', factor: 31557600, short: 'y' },
+            { name: 'Monat', factor: 2629800, short: 'mon' },
+            { name: 'Woche', factor: 604800, short: 'w' },
+            { name: 'Tag', factor: 86400, short: 'd' },
+            { name: 'Stunde', factor: 3600, short: 'h' },
+            { name: 'Minute', factor: 60, short: 'min' },
+            { name: 'Sekunde', factor: 1, short: 'sec' },
+            { name: 'Millisekunde', factor: 0.001, short: 'mils' },
+            { name: 'Mikrosekunde', factor: 0.000001, short: 'mics' },
+            { name: 'Nanosekunde', factor: 0.000000001, short: 'nans' },
+        ]
+    },
+    {
+        name: 'Temperatur',
+        siUnit: '°Kelvin',
+        types: [
+            { name: '°Celsius', factor: -1, short: 'c', to: n => n - 273.15, from: n => n + 273.15 },
+            { name: '°Kelvin', factor: 1, short: 'k' },
+            { name: '°Fahrenheit', factor: -1, short: 'f', to: n => 1.8 * n - 459.67, from: n => (n + 459.67) * 0.555555556 },
         ]
     }
 ]
@@ -98,7 +123,7 @@ function getShortcutLookup() {
 }
 
 function getUnitHelpList() {
-    return units.map(unit => `<h2>${unit.name}</h2><ul>${unit.types.map(type => `<li>[ ${type.short} ] = 1 ${type.name} = ${type.factor} ${unit.siUnit}</li>`).join('')
+    return units.map(unit => `<h2>${unit.name}</h2><ul>${unit.types.map(type => `<li>[ ${type.short} ] = 1 ${type.name} = ${type.factor === -1 ? type.to(1) : type.factor} ${unit.siUnit}</li>`).join('')
         }</ul>`).join('');
 }
 
@@ -136,6 +161,7 @@ function handleUnitConvert() {
     }
 
     $('#results').innerHTML = conversions;
+    setTimeout(() => $('#results').scrollIntoView({ behavior: 'smooth' }), 50);
 }
 
 function getUnitConversions(unit, type, value) {
@@ -150,11 +176,15 @@ function getUnitConversions(unit, type, value) {
         return;
     }
     const factor = units[unit].types[type].factor;
-    const siUnit = value * factor;
+    const siUnit = factor === -1 ? units[unit].types[type].from(value) : (value * factor);
 
     conversions = `<h2>${value} ${units[unit].types[type].name} = </h2><ul>`;
     conversions += units[unit].types
-        .map(type => `<li><span class="convert-number">${roundNumber(siUnit / type.factor)}</span> ${type.name}</li>`).join('');
+        .map(type => {
+            const result = type.factor === -1 ? type.to(siUnit) : (siUnit / type.factor);
+            return `<li><span class="convert-number">${roundNumber(result)}</span> ${type.name}</li>`
+        })
+        .join('');
     conversions += '</ul>'
 
     return { conversions, conversionError };
