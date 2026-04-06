@@ -1,0 +1,12 @@
+.about-page ul {
+    padding-inline-start: 2rem;
+    list-style-type: disc;
+}
+
+.about-page h2:not(:first-child) {
+    margin-block-start: 1rem;
+}
+
+.about-page a, .about-page a:visited {
+    color: inherit;
+}

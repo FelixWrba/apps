@@ -20,6 +20,25 @@
             margin: 0;
             overflow: hidden;
             background-color: black;
+            color: white;
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        .center {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        #pause-menu {
+            visibility: hidden;
         }
     </style>
 </head>
@@ -27,6 +46,18 @@
 <body>
     <canvas id="game-canvas"></canvas>
     <button id="pause-btn">Anhalten</button>
+
+    <div id="main-menu" class="overlay center">
+        <h1>Geometrie Dash</h1>
+        <button id="start-button">Starten</button>
+        <a href="/">Zurück</a>
+    </div>
+
+    <div id="pause-menu" class="overlay center">
+        <h2>Spiel angehalten</h2>
+        <button id="continue-button">Fortsetzen</button>
+        <button id="exit-button">Hauptmenü</button>
+    </div>
 
     <script src="../lib.js"></script>
     <script src="game.js"></script>

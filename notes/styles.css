@@ -2,6 +2,13 @@
     padding: 1rem;
 }
 
+.notes-empty-message {
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: bolder;
+    padding: 3rem 1rem 4rem 1rem;
+}
+
 .notes-list {
     list-style-type: none;
     display: flex;

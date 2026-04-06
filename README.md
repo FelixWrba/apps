@@ -1,34 +1,19 @@
-# Fittness App
+# AppHub
 
-## Core functions
+AppHub is a collection of useful web apps and games, created by Felix Wrba.
 
-1. CRUD Workout list
-2. Workout contains: sets count, list with exercises name and rep range
-3. Training mode: cycle through exercises of workout
+## Apps and Games on Appstein Hub
 
-## Details
+* Task planner (external)
+* Unit converter
+* Note-taking app
+* Game "Die Hinterzimmer" (Windows and Linux, x86 64bit, compilation possible)
+* Geometry Dash clone (browser, incompleted)
 
-### Workout
+## Website
 
-Properties:
-- Name
-- Set count
-- Exercises
+AppHub can be accessed [here](https://derapphub.netlify.app)
 
-Methods:
-- Create
-- Edit
-- View
-- Delete
+## Copyright
 
-### Exercise
-
-Properties:
-- Name
-- Rep range
-
-Methods:
-- Create
-- Edit
-- View
-- Delete
+Copyright (c) 2026 - Current Felix Wrba. All rights reserved.

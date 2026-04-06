@@ -1,24 +1,30 @@
+// setup canvas
 const gameCanvas = $('#game-canvas');
-
-let sizeX = window.innerWidth;
-let sizeY = window.innerHeight;
-
-gameCanvas.width = sizeX;
-gameCanvas.height = sizeY;
-
 const ctx = gameCanvas.getContext('2d');
-const fps = 1000 / 60;
+
+// handle window resizing
+let sizeX, sizeY;
+
+function resizeCanvas() {
+    sizeX = window.innerWidth;
+    sizeY = window.innerHeight;
+
+    gameCanvas.width = sizeX;
+    gameCanvas.height = sizeY;
+}
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+
+const fps = 1000 / 60; // 60fps
+const delta = fps / 16.67;
+let physicsId, drawId;
+
 const gravity = 0.5;
 const groundLevel = 400;
-
-const textureCount = 2;
-let loadedTextures = false;
 
 let isPaused = false;
 let timePassed = 0;
 let isJumping = false;
-
-let physicsId, drawId;
 
 let player = {
     w: 32,
@@ -46,6 +52,10 @@ let camera = {
 
 let spikes = [200, 500, 1000, 1050, 2000, 3000];
 
+// handle texture loading
+const textureCount = 2;
+let loadedTextures = false;
+
 player.texture.src = 'assets/cube.png';
 player.texture.onload = handleTextureLoad();
 floor.texture.src = 'assets/floor.png';
@@ -55,7 +65,7 @@ function handleTextureLoad() {
     loadedTextures++;
 
     if (loadedTextures >= textureCount) {
-        startGame();
+        initGame();
     }
 }
 
@@ -67,11 +77,11 @@ function process() {
     camera.y = groundLevel - sizeY + camera.padding;
 
     // update player
-    player.x += player.vx;
-    player.y += player.vy;
+    player.x += player.vx * delta;
+    player.y += player.vy * delta;
 
     if (!player.grounded) {
-        player.vy += gravity;
+        player.vy += gravity * delta;
     }
 
     if ((player.y + player.h) >= groundLevel) {
@@ -88,7 +98,7 @@ function process() {
     }
 
     if (player.rotation % 1.5707963267948966 > 0.01) {
-        player.rotation = lerp(player.rotation, player.rotation + 1.5707963267948966, 0.025);
+        player.rotation = lerp(player.rotation, player.rotation + 1.5707963267948966, delta * 0.025);
     }
 }
 
@@ -123,9 +133,6 @@ function drawPlayer() {
 }
 
 function drawGround() {
-    // ctx.fillStyle = 'lightblue';
-    // ctx.fillRect(0, groundLevel - camera.y, sizeX, sizeY);
-
     const tiles = Math.ceil(sizeX / floor.w) + 1;
     const position = camera.x % floor.w;
 
@@ -135,11 +142,13 @@ function drawGround() {
 }
 
 function startGame() {
+    const menu = $('#main-menu');
+    hide(menu);
+
     isPaused = false;
     physicsId = setInterval(() => process(), fps);
 
     setupInputs();
-
     draw();
 }
 
@@ -156,6 +165,13 @@ function unpauseGame() {
     draw();
 }
 
+function displayMainMenu() {
+    const menu = $('#main-menu');
+    show(menu);
+
+    $('#start-button').addEventListener('click', startGame);
+}
+
 function setupInputs() {
     gameCanvas.addEventListener('mousedown', () => isJumping = true);
     gameCanvas.addEventListener('mouseup', () => isJumping = false);
@@ -170,4 +186,8 @@ function setupInputs() {
             pauseGame();
         }
     });
+}
+
+function initGame() {
+    displayMainMenu();
 }

@@ -16,5 +16,13 @@ function serialize(number) {
 }
 
 function lerp(from, to, weight) {
-    return weight * (to - from) + from;
+    return from + weight * (to - from);
+}
+
+function hide(element) {
+    element.style.visibility = 'hidden';
+}
+
+function show(element) {
+    element.style.visibility = 'visible';
 }
