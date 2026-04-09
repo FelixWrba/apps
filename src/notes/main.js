@@ -56,7 +56,12 @@ function deleteNote(noteId) {
 
 function getDashboardView() {
     const htmlList = notes.map(note =>
-        `<li class="notes-list__item"><button onclick="renderPage(getNoteView(${note.id}))"><h3>${x(note.name) || 'Unbenannt'}</h3><p>${x(note.text.slice(0, 100))}${note.text.length > 100 ? '...' : ''}</p></li></button>`
+        `<li class="notes-list__item" draggable="true">
+        <button onclick="renderPage(getNoteView(${note.id}))">
+        <h3>${x(note.name) || 'Unbenannt'}</h3>
+        <p>${x(note.text.slice(0, 100))}${note.text.length > 100 ? '...' : ''}</p>
+        </button>
+        </li>`
     ).join('');
 
     return `${htmlList ? '<ul class="notes-list">' + htmlList + '</ul>' : '<p class="notes-info notes-empty-message">Noch keine Notizen</p>'}<div class="note-create-cta"><button onclick="handleNoteCreateRequest()">Neue Notiz</button></div>`;
@@ -150,7 +155,7 @@ function getShareView(noteId) {
         qrCode.make();
         qrCodeImage = qrCode.createImgTag();
     }
-    catch(error) {
+    catch (error) {
         console.error(error);
     }
 

@@ -42,6 +42,10 @@
             <p>Schreibe, verwalte und sehe dir deine Notizen mit dieser Notizen-App an. Teile deine Notizen per Link
                 oder QR-Code mit anderen oder drucke sie aus.</p>
         </section>
+        <section class="app-card">
+            <h2><a href="/random">Zufallszahl</a></h2>
+            <p>Diese App generiert in sekundenschnelle eine x-beliebige Zufallszahl, egal ob eine Zahl von 1-100, Würfel oder Münzfwurf.</p>
+        </section>
         <!-- <section class="app-card">
             <h2><a href="/counter">Zahlen-Tracker</a></h2>
             <p>Diese Zahl-Tracking App speichert und verwaltet alle möglichen Zahlen wie Finanzen, Countdowns oder persönliche Ziele.</p>
@@ -64,7 +68,8 @@
     </main>
 
     <footer>
-        <p>Copyright &copy; 2026 Felix Wrba. Alle Rechte vorbehalten<span onclick="window.location.href = '/fitnes'">.</span></p>
+        <p>Copyright &copy; 2026 Felix Wrba. Alle Rechte vorbehalten<span
+                onclick="window.location.href = '/fitnes'">.</span></p>
         <p>Mein Github Profil: <a href="https://github.com/FelixWrba" target="_blank" rel="noopener noreferrer"
                 title="@FelixWrba">@FelixWrba</a></p>
         <p><a href="https://github.com/FelixWrba/apps" target="_blank" rel="noopener noreferrer">Quellcode</a> auf
@@ -73,7 +78,7 @@
 
     <script src="lib.js"></script>
     <script>
-        if(navigator.serviceWorker) {
+        if (navigator.serviceWorker) {
             navigator.serviceWorker.register('sw.js');
         }
     </script>

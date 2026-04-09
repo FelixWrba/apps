@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zufallszahl</title>
+    <meta name="description"
+        content="Diese App generiert in sekundenschnelle eine x-beliebige Zufallszahl, egal ob eine Zahl von 1-100, Würfel oder Münzfwurf.">
+    <link rel="stylesheet" href="../main.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <header>
+        <a href="/" aria-label="Appübersicht" title="Appübersicht">&larr;</a>
+        <h1>Zufallszahl</h1>
+    </header>
+
+    <main id="app">
+        <form onsubmit="outputRandomNumber(); return false">
+            <h2>Zahlenbereich</h2>
+            <div class="random-row">
+                <input type="number" placeholder="1" id="start" aria-label="Anfang" required>
+                <span>bis</span>
+                <input type="number" placeholder="100" id="end" aria-label="Ende" required>
+                <button type="submit">Generieren</button>
+            </div>
+            <p class="output-line">Zufallszahl: <output for="start end" id="range-output"
+                    class="random-output">-</output></p>
+        </form>
+        <section>
+            <h2>Weiteres</h2>
+            <div class="random-row">
+                <button onclick="outputDiceRoll()">Würfeln</button>
+                <button onclick="ouputCoinThrow()">Münze werfen</button>
+            </div>
+            <p class="output-line">Zahl: <output id="dice-output" class="random-output">-</output></p>
+            <p class="output-line">Seite: <output id="coin-output" class="random-output">-</output></p>
+        </section>
+    </main>
+
+    <footer>
+        Copyright &copy; 2026 Felix Wrba. Alle Rechte vorbehalten.
+    </footer>
+
+    <script src="../lib.js"></script>
+    <script src="main.js"></script>
+</body>
+
+</html>
