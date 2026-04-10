@@ -7,6 +7,11 @@ function $(selector) {
     return document.querySelector(selector);
 }
 
+/**
+ * Replace certain HTML characters of a given string with HTML-entities.
+ * @param {string} text
+ * @returns {string}
+ */
 function x(text) {
     return text
         .replace(/&/g, '&amp;')
@@ -30,4 +35,14 @@ function hide(element) {
 
 function show(element) {
     element.style.visibility = 'visible';
+}
+
+/**
+ * Get a whole number from given range defined by min and max.
+ * @param {number} min - Start of the range
+ * @param {number} max - End of the range
+ * @returns {number}
+ */
+function getNumberFromRange(min, max) {
+    return Math.round(Math.random() * (max - min) + min);
 }

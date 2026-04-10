@@ -4,11 +4,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zufallszahl</title>
+    <title>Zufallsgenerator</title>
     <meta name="description"
-        content="Diese App generiert in sekundenschnelle eine x-beliebige Zufallszahl, egal ob eine Zahl von 1-100, Würfel oder Münzfwurf.">
+        content="Dieser Zufallsgenerator erstellt in Sekundenschnelle zufällige Zahlen aus einem Bereich, simuliert einen Würfel oder eine Münze.">
     <link rel="stylesheet" href="../main.css">
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        .output-line {
+            margin: 1rem;
+        }
+
+        .random-output {
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bolder;
+        }
+
+        .random-row {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .random-row input {
+            flex: 1;
+            min-width: 4rem;
+            max-width: 12rem;
+        }
+
+        @media (max-width: 500px) {
+            .random-row button {
+                padding-inline: 1rem;
+                flex: 1;
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -45,7 +73,34 @@
     </footer>
 
     <script src="../lib.js"></script>
-    <script src="main.js"></script>
+    <script>
+        const startInput = $('#start');
+        const endInput = $('#end');
+
+        const rangeOutput = $('#range-output');
+        const diceOutput = $('#dice-output');
+        const coinOutput = $('#coin-output');
+
+        function outputRandomNumber() {
+            const start = parseInt(startInput.value);
+            const end = parseInt(endInput.value);
+
+            if (isNaN(start) || isNaN(end)) {
+                rangeOutput.innerText = 'Ungültige Eingabe';
+                return
+            }
+
+            rangeOutput.innerText = getNumberFromRange(start, end);
+        }
+
+        function outputDiceRoll() {
+            diceOutput.innerText = getNumberFromRange(1, 6);
+        }
+
+        function ouputCoinThrow() {
+            coinOutput.innerText = Math.random() > 0.5 ? 'Kopf' : 'Zahl';
+        }
+    </script>
 </body>
 
 </html>
