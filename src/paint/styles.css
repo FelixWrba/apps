@@ -4,3 +4,22 @@
     border: 1px solid black;
     touch-action: none;
 }
+
+.menu {
+    display: flex;
+    gap: 1em;
+    margin-bottom: 0.5em;
+}
+
+.menu button {
+    padding: 0 0.5em;
+}
+
+.menu input[type=color] {
+    padding: 0;
+    background-color: transparent;
+}
+
+.mode-menu button.select {
+    box-shadow: 0 0 10px black;
+}

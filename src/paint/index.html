@@ -17,7 +17,24 @@
     </header>
 
     <main id="app">
+        <div class="menu">
+            <div class="mode-menu">
+                <button id="move-mode-button" class="select">Move</button>
+                <button id="draw-mode-button">Draw</button>
+            </div>
+            <div class="action-menu">
+                <button>Undo</button>
+                <button disabled>Redo</button>
+            </div>
+            <div class="options-menu">
+                <label for="fill-color-input">Fill: </label>
+                <input type="color" id="fill-color-input">
+                <label for="stroke-color-input">Stroke: </label>
+                <input type="color" id="stroke-color-input">
+            </div>
+        </div>
         <canvas id="canvas"></canvas>
+        <p id="debug">Debug info</p>
     </main>
 
     <footer>

@@ -262,41 +262,13 @@ function roundNumber(number) {
     if (!isFinite(number)) {
         return '< ' + Number.MAX_VALUE;
     }
+    // handle exponent notation
     let asString = number.toString();
     if (asString.includes('e') || !asString.includes('.')) {
         return asString;
     }
+    // revert to default behavior
     return number.toFixed(6);
-
-    const precision = 3;
-    let validFigures = 0;
-    let expectTrailingNull = true;
-    let isDecimalPart = false;
-
-    console.log(asString);
-
-    for (let i = 0; i < asString.length; i++) {
-        if (asString[i] === '.') {
-            isDecimalPart = true;
-            continue;
-        }
-        if (asString[i] === '0') {
-            if (!expectTrailingNull) {
-                validFigures++;
-            }
-        }
-        else {
-            validFigures++;
-            expectTrailingNull = false;
-        }
-
-        if (validFigures >= precision) {
-            asString = asString.slice(0, i + 1);
-            break;
-        }
-    }
-
-    return asString;
 }
 
 function findFirstLetter(text) {
